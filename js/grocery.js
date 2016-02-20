@@ -22,19 +22,40 @@ function checkPrice() {
 }
 function addItem() {
 	if(truthValue == true) {
-	var elName = document.getElementById("i_name");
-	var elPrice = document.getElementById("i_price");
-	var elGrocery = document.getElementById("table");
+		var elName = document.getElementById("i_name");
+		var elPrice = document.getElementById("i_price");
+		var elGrocery = document.getElementById("table");
 
-	var elLabel = document.createElement("label");
-	var row = elGrocery.insertRow(0);
-	var cell0 = row.insertCell(0);
-	var cell1 = row.insertCell(1);
-	var cell2 = row.insertCell(2);
-	cell1.innerHTML = elName.value;
-	cell2.innerHTML = "$ " + elPrice.value;
-	cell0.innerHTML =  "<input type = checkbox class = checkbox>";
+		var row = elGrocery.insertRow(0);
+		var cell0 = row.insertCell(0);
+		var cell1 = row.insertCell(1);
+		var cell2 = row.insertCell(2);
+		cell1.innerHTML = elName.value;
+		cell2.innerHTML = elPrice.value;
+		cell0.innerHTML =  "<input type = checkbox class = checkbox id = checkbox>";
+
+		//---------------------------------------------------------
+		
+		var totalItem = document.getElementById("totalItem");
+		var totalPrice = document.getElementById("totalPrice");
+		totalPrice.value = parseInt(totalPrice.value) + parseInt(elPrice.value);
+		totalItem.value++;
+	}
 }
+function checkCheckbox(e) {
+	var target = e.target;
+	if(target.type == "checkbox") {
+		var totalItem = document.getElementById("totalItem");
+		var totalPrice = document.getElementById("totalPrice");
+		if(target.checked == 1) {
+			totalItem.value--;
+			totalPrice.value = parseInt(totalPrice.value) - parseInt(target.parentNode.parentNode.lastChild.innerHTML,10);
+		}
+		else {
+			totalItem.value++;
+			totalPrice.value = parseInt(totalPrice.value) + parseInt(target.parentNode.parentNode.lastChild.innerHTML,10);	 
+		}
+	}
 }
 
 var truthValue = false;
@@ -46,3 +67,9 @@ elPrice.addEventListener("blur".checkPrice,false);
 
 var elSubmit = document.getElementById("submit");
 elSubmit.onclick = addItem;
+
+
+var elTable = document.getElementById("table");
+elTable.addEventListener("click",function (e) {
+	checkCheckbox(e);
+},false);
